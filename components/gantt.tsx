@@ -1,4 +1,4 @@
-import type { ProductionLine, ScheduleItem, WorkOrder } from "@/lib/types";
+﻿import type { ProductionLine, ScheduleItem, WorkOrder } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -178,3 +178,4 @@ export function Gantt({
     </div>
   );
 }
+
