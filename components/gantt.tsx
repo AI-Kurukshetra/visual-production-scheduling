@@ -25,16 +25,7 @@ function getSlotMeta(view: ViewMode) {
   return { slotsPerDay, totalSlots: buildColumns(view).length };
 }
 
-export function Gantt({
-  items,
-  lines,
-  maintenance,
-  view,
-  onSelectItem,
-  selectedItemId,
-  workOrdersById,
-  lineUtilization
-}: {
+type GanttProps = {
   items: ScheduleItem[];
   lines: ProductionLine[];
   maintenance: MaintenanceWindow[];
@@ -43,7 +34,18 @@ export function Gantt({
   selectedItemId?: string | null;
   workOrdersById: Record<string, WorkOrder | undefined>;
   lineUtilization: Record<string, number>;
-}) {
+};
+
+export function Gantt({
+  items,
+  lines,
+  maintenance,
+  view,
+  onSelectItem,
+  selectedItemId,
+  workOrdersById,
+  lineUtilization,
+}: GanttProps) {
   const columns = buildColumns(view);
   const { slotsPerDay, totalSlots } = getSlotMeta(view);
 
@@ -148,11 +150,11 @@ export function Gantt({
                         className={cn(
                           "z-10 flex h-12 flex-col items-start justify-center gap-1 rounded-lg border px-2 py-1 text-left text-[11px] font-semibold transition shadow-sm",
                           entry.status === "on-time" &&
-                          "border-emerald-200 bg-emerald-50 text-emerald-700",
+                            "border-emerald-200 bg-emerald-50 text-emerald-700",
                           entry.status === "at-risk" &&
-                          "border-amber-200 bg-amber-50 text-amber-700",
+                            "border-amber-200 bg-amber-50 text-amber-700",
                           entry.status === "delayed" &&
-                          "border-rose-200 bg-rose-50 text-rose-700",
+                            "border-rose-200 bg-rose-50 text-rose-700",
                           selectedItemId === entry.id && "ring-2 ring-slate-300"
                         )}
                         style={{ gridColumn: `${startSlot} / span ${durationSlots}` }}
