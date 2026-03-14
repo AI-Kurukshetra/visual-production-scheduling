@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  font-family: var(--font-body);
+  @apply bg-[#f6f2ec] text-slate-900;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
+}
+
+.app-shell {
+  background:
+    radial-gradient(900px circle at 10% -10%, rgba(37, 99, 235, 0.12), transparent 45%),
+    radial-gradient(700px circle at 85% -20%, rgba(244, 114, 182, 0.12), transparent 45%),
+    linear-gradient(180deg, #f6f2ec 0%, #fbf8f3 100%);
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(226, 232, 240, 0.7);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 24px 60px -42px rgba(15, 23, 42, 0.35);
+}
+
+.section-title {
+  @apply text-xs uppercase tracking-[0.28em] text-slate-500;
+}

@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Facility {
+  id        String           @id @default(cuid())
+  name      String
+  location  String
+  lines     ProductionLine[]
+  createdAt DateTime         @default(now())
+}
+
+model ProductionLine {
+  id           String    @id @default(cuid())
+  name         String
+  throughputPerHour Int
+  facility     Facility  @relation(fields: [facilityId], references: [id])
+  facilityId   String
+  machines     Machine[]
+  workOrders   WorkOrder[]
+}
+
+model Machine {
+  id          String   @id @default(cuid())
+  name        String
+  status      String
+  utilization Float
+  line        ProductionLine @relation(fields: [lineId], references: [id])
+  lineId      String
+}
+
+model Product {
+  id            String     @id @default(cuid())
+  name          String
+  family        String
+  leadTimeDays  Int
+  workOrders    WorkOrder[]
+}
+
+model WorkOrder {
+  id          String      @id
+  quantity    Int
+  dueDate     DateTime
+  priority    String
+  status      String
+  line        ProductionLine @relation(fields: [lineId], references: [id])
+  lineId      String
+  product     Product     @relation(fields: [productId], references: [id])
+  productId   String
+  operations  Operation[]
+}
+
+model Operation {
+  id            String   @id @default(cuid())
+  name          String
+  durationHours Float
+  setupHours    Float
+  workOrder     WorkOrder @relation(fields: [workOrderId], references: [id])
+  workOrderId   String
+}
+
+model Resource {
+  id          String   @id @default(cuid())
+  name        String
+  type        String
+  utilization Float
+  status      String
+}
+
+model Inventory {
+  id          String   @id @default(cuid())
+  item        String
+  onHand      Int
+  safetyStock Int
+  status      String
+}
+
+model Alert {
+  id          String   @id @default(cuid())
+  type        String
+  title       String
+  description String
+  severity    String
+  createdAt   DateTime @default(now())
+}
+
+model Schedule {
+  id          String   @id @default(cuid())
+  workOrderId String
+  lineId      String
+  startDay    Int
+  durationDays Int
+  status      String
+}
+
+model Scenario {
+  id      String   @id @default(cuid())
+  name    String
+  summary String
+  metrics Metric[]
+}
+
+model Metric {
+  id        String   @id @default(cuid())
+  label     String
+  value     Float
+  unit      String
+  delta     Float
+  scenario  Scenario @relation(fields: [scenarioId], references: [id])
+  scenarioId String
+}
