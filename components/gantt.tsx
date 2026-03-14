@@ -60,11 +60,13 @@ export function Gantt({
           </div>
         ))}
       </div>
+
       <div className="space-y-3">
         {lines.map((line) => {
           const utilization = Math.round((lineUtilization[line.id] ?? 0) * 100);
           const rowItems = items.filter((item) => item.lineId === line.id);
           const rowMaintenance = maintenance.filter((item) => item.lineId === line.id);
+
           return (
             <div
               key={line.id}
@@ -73,11 +75,13 @@ export function Gantt({
             >
               <div className="space-y-2 rounded-xl border border-slate-200/70 bg-white p-3 shadow-sm">
                 <p className="text-sm font-semibold text-slate-900">{line.name}</p>
+
                 <div className="space-y-1">
                   <div className="flex items-center justify-between text-xs text-slate-400">
                     <span>Utilization</span>
                     <span className="text-slate-700">{utilization}%</span>
                   </div>
+
                   <div className="h-2 rounded-full bg-slate-100">
                     <div
                       className={cn(
@@ -118,6 +122,7 @@ export function Gantt({
                   {rowMaintenance.map((mw) => {
                     const startSlot = (mw.startDay - 1) * slotsPerDay + 1;
                     const durationSlots = mw.durationDays * slotsPerDay;
+
                     return (
                       <div
                         key={mw.id}
@@ -134,6 +139,7 @@ export function Gantt({
                     const durationSlots = entry.durationDays * slotsPerDay;
                     const order = workOrdersById[entry.workOrderId];
                     const priority = order?.priority ?? "medium";
+
                     return (
                       <button
                         key={entry.id}
@@ -141,17 +147,22 @@ export function Gantt({
                         onClick={() => onSelectItem?.(entry)}
                         className={cn(
                           "z-10 flex h-12 flex-col items-start justify-center gap-1 rounded-lg border px-2 py-1 text-left text-[11px] font-semibold transition shadow-sm",
-                          entry.status === "on-time" && "bg-emerald-50 text-emerald-700 border-emerald-200",
-                          entry.status === "at-risk" && "bg-amber-50 text-amber-700 border-amber-200",
-                          entry.status === "delayed" && "bg-rose-50 text-rose-700 border-rose-200",
+                          entry.status === "on-time" &&
+                          "border-emerald-200 bg-emerald-50 text-emerald-700",
+                          entry.status === "at-risk" &&
+                          "border-amber-200 bg-amber-50 text-amber-700",
+                          entry.status === "delayed" &&
+                          "border-rose-200 bg-rose-50 text-rose-700",
                           selectedItemId === entry.id && "ring-2 ring-slate-300"
                         )}
                         style={{ gridColumn: `${startSlot} / span ${durationSlots}` }}
                       >
-                        <span className="text-[10px] uppercase tracking-[0.16em] text-slate-400">{priority}</span>
+                        <span className="text-[10px] uppercase tracking-[0.16em] text-slate-400">
+                          {priority}
+                        </span>
                         <span>{order?.id ?? entry.label}</span>
                         <span className="text-[10px] font-medium text-slate-500">
-                          {order?.product.name ?? \"\"} · {entry.durationDays}d
+                          {order?.product.name ?? ""} · {entry.durationDays}d
                         </span>
                       </button>
                     );
